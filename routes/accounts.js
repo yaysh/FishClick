@@ -11,7 +11,7 @@ var db = mongojs("mongodb://localhost:27017/home", ["users"]);
 */
 router.post("/login", (req, res, next) => {
     const user = req.body;
-    db.users.findOne({ username: user.username, password: user.password }, (err, user) =>  {
+    db.users.findOne({ username: user.username, password: user.password }, (err, user) => {
         if (err) {
             res.json({
                 error: err
@@ -75,7 +75,6 @@ router.post("/", (req, res, next) => {
     /api/accounts/followers
     POST - add a follower
     GET - get all users User is following
-
 ####################################
 */
 router.post("/followers", (req, res, next) => {
@@ -96,7 +95,7 @@ router.post("/followers", (req, res, next) => {
                             });
                         } else {
                             res.json({
-                                "result": result
+                                "result": "added friend"
                             });
                         }
                     });
@@ -109,7 +108,7 @@ router.post("/followers", (req, res, next) => {
             });
         } else {
             res.json({
-                error: "user doesn't exist."
+                error: "user doesn't exist"
             })
         }
 
@@ -119,7 +118,7 @@ router.post("/followers", (req, res, next) => {
 
 router.get("/followers", (req, res, next) => {
     const user_id = req.query.user_id;
-    db.users.findOne({ _id: mongojs.ObjectId(user_id) }, (err, user) =>  {
+    db.users.findOne({ _id: mongojs.ObjectId(user_id) }, (err, user) => {
         if (err) {
             res.json({
                 error: err
@@ -144,17 +143,35 @@ router.get("/followers", (req, res, next) => {
 router.post("/unfollow", (req, res, next) => {
     const user_id = req.body.user_id
     const unfollowUsername = req.body.want_to_unfollow;
-    db.users.update({ _id: mongojs.ObjectId(user_id) }, {
-        $pull: { following: { username: unfollowUsername } }
-    }, function(err, result) {
-        if (err) {
-            res.json({
-                error: err
+
+    userExists(unfollowUsername).then((doesExist) => {
+        if (doesExist) {
+            userIdBelongsToUser(user_id, unfollowUsername).then((result) => {
+                if (result) {
+                    res.json({
+                        error: "cant unfollow yourself"
+                    });
+                } else {
+                    console.log(result);
+                    db.users.update({ _id: mongojs.ObjectId(user_id) }, {
+                        $pull: { following: { username: unfollowUsername } }
+                    }, function(err, result) {
+                        if (err) {
+                            res.json({
+                                error: err
+                            });
+                        } else {
+                            res.json({
+                                result: "unfollowed"
+                            });
+                        }
+                    });
+                }
             });
-        } else {
+        }else{
             res.json({
-                result: result
-            });
+                error: "user doesn't exist"
+            })
         }
     });
 });
@@ -171,7 +188,7 @@ router.post("/unfollow", (req, res, next) => {
 */
 //get user details where ID = req.params.id
 router.get("/:id", (req, res, next) => {
-    db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) =>  {
+    db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) => {
         if (err) {
             res.json({
                 error: err
@@ -184,7 +201,7 @@ router.get("/:id", (req, res, next) => {
 
 //update user details where ID = req.params.id
 router.post("/:id", (req, res, next) => {
-    db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) =>  {
+    db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) => {
         if (err) {
             res.json({
                 error: err
@@ -213,7 +230,7 @@ router.delete("/:id", (req, res, next) => {
                     });
                 }
             });
-        }else{
+        } else {
             console.log("no username")
         }
 
@@ -271,6 +288,28 @@ function deleteAllOccurencesOf(username) {
         });
 }
 
+function userIdBelongsToUser(user_id, username) {
+    return new Promise(
+        (resolve, reject) => {
+            db.users.findOne({
+                username: username
+            }, (err, user) => {
+                if (err) {
+                    resolve(false);
+                } else if (user) {
+                    if (user._id.toString() === user_id) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                } else {
+                    resolve(false);
+                }
+                resolve(false);
+            });
+        });
+}
+
 function findUserById(id) {
     return new Promise(
         (resolve, reject) => {
@@ -309,7 +348,7 @@ function isAlreadyFollowing(res, user_id, want_to_follow) {
                     resolve(false);
                 } else if (user) {
                     res.json({
-                        error: ("already following " + want_to_follow)
+                        error: "already following"
                     });
                 } else {
                     resolve(false);

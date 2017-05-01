@@ -9,9 +9,9 @@ def main():
     # createAccount()                   #fungerar
     # login()                           #fungerar
     # addFollower()                     #fungerar
-    # removeFollower()                  #fungerar
+     removeFollower()                  #fungerar
     # getFollowers()                    #fungerar
-    deleteAccountUnfollowTest()
+    #deleteAccountUnfollowTest()
 
 
 def createAccount():
