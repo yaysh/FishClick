@@ -48,34 +48,44 @@ router.post("/", (req, res, next) => {
 /*
 ####################################
     /api/accounts/followers
-    POST - add a follower 
-    GET - get all users User is followinug
-    DELETE - remove user from Users following list
+    POST - add a follower
+    GET - get all users User is following
+
 ####################################
 */
 router.post("/followers", (req, res, next) => {
-    const followUsername = req.body.username;
-    db.users.update({ username: "jens" }, {
-        $push: { following: { "username": followUsername } }
-    }, function(err, result) {
-        if (err) {
-            res.json({ "error": err });
+    const user_id = req.body.user_id;
+    const want_to_follow = req.body.want_to_follow;
+    isAlreadyFollowing(res, user_id, want_to_follow).then((isFollowing) => {
+        if (isFollowing) {
+            res.json({
+                "huh": "huh"
+            });
         } else {
-            res.json({ "result": result });
+            db.users.update({ "_id": mongojs.ObjectId(user_id) }, {
+                $push: { following: { "username": want_to_follow } }
+            }, function(err, result) {
+                if (err) {
+                    res.json({ "error": err });
+                } else {
+                    res.json({ "result": result });
+                }
+            });
         }
     });
 });
+
 //Remove a follower
-router.delete("/followers", (req, res, next) => {
-    const unfollowUsername = req.body.username;
-    db.users.update({ username: "jens" }, {
+router.post("/unfollow", (req, res, next) => {
+    const user_id = req.body.user_id
+    const unfollowUsername = req.body.want_to_unfollow;
+    db.users.update({ _id: mongojs.ObjectId( user_id ) }, {
         $pull: { following: { "username": unfollowUsername } }
     }, function(err, result) {
+        console.log("sweg");
         if (err) {
-            console.log("error");
             res.json({ "error": err });
         } else {
-            console.log("no error");
             res.json({ "result": result });
         }
     });
@@ -88,12 +98,11 @@ router.get("/followers", (req, res, next) => {
             res.json({
                 "error": "error"
             });
-        } else if(!user.following){
+        } else if (!user.following) {
             res.json({
                 "error": "user is not following anyone"
             });
-        }
-        else {
+        } else {
             res.json(user.following);
         }
     });
@@ -108,6 +117,7 @@ router.get("/followers", (req, res, next) => {
     DELETE - delete user
     ####################################
 */
+//get user details where ID = req.params.id
 router.get("/:id", (req, res, next) => {
     db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) =>  {
         if (err) {
@@ -118,14 +128,26 @@ router.get("/:id", (req, res, next) => {
             res.json(user);
         }
     });
-})
+});
+
+//update user details where ID = req.params.id
+router.post("/:id", (req, res, next) => {
+    db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) =>  {
+        if (err) {
+            res.json({
+                "error": err
+            })
+        } else {
+            //Logic here pls
+        }
+    });
+});
 
 //delete a single user based on the user ID found in the mongodb 
 //fix some security around this one lads
 router.delete("/:id", (req, res, next) => {
     db.users.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, user) => {
         if (err) {
-            console.log("error")
             res.json({
                 "error": err
             })
@@ -154,7 +176,7 @@ router.post("/login", (req, res, next) => {
             res.json({ "error": "username or account wrong" });
         }
     });
-})
+});
 
 /*
     The following two functions are helper functions for creating the account
@@ -167,7 +189,6 @@ function createUser(res, user) {
         if (err) {
             res.json({ "error": "error inside users.save" });
         }
-        console.log(user);
         res.json(user);
     });
 }
@@ -189,9 +210,34 @@ function userExists(res, user) {
         }
     );
 }
+
 /*
-    Create user functions end here
+    Helper function for 
+        /api/accounts/followers
 */
+
+//Check if User1 (user_id) is already following User2 (want_to_follow)
+//user id is a String _id and want_to_follow is a String username
+function isAlreadyFollowing(res, user_id, want_to_follow) {
+    return new Promise(
+        (resolve, reject) => {
+            db.user.find({
+                 _id: mongojs.ObjectId(user_id), following: { "username": want_to_follow }
+            }, (err, user) => {
+                if (err) {
+                    resolve(false);
+                } else if (user) {
+                    res.json({
+                        "error": ("already following " + want_to_follow)
+                    });
+                } else {
+                    resolve(false);
+                }
+            });
+        }
+    )
+
+}
 
 
 module.exports = router;

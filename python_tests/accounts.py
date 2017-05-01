@@ -4,18 +4,18 @@ url = "http://localhost:80/api/accounts"
 
 def main():  
     # print("Testing create account")
-    # createAccount()
+    #createAccount()
     # deleteAccount()
     # print("Testing login")
     # login()
-    # addFollower()
-    # removeFollower()
+    #addFollower()
+     removeFollower()
     # getFollowers()
 
 
 
 def createAccount():
-    newAccount = {'username':'jens', 'password': 'madsen'}
+    newAccount = {'username':'anna', 'password': 'isfeldt'}
     r = requests.post(url, newAccount)
     print(r.json())
 
@@ -40,30 +40,24 @@ def deleteAccount():
 
 def addFollower():
     userInput = input("Who do you want to follow? ")
-    data = {"username": "jens", "username": userInput}
-    r = requests.post("http://localhost:80/api/accounts/addfollower", data)
+    data = {"user_id": "59071e74f30f8f0b83ce88c6", "want_to_follow": userInput}
+    r = requests.post("http://localhost:80/api/accounts/followers", data)
     print(r.json())
 
 
 
 def removeFollower():
     userInput = input("Who do you want to unfollow? ")
-    data = {"username": "jens", "username": userInput}
-    r = requests.post("http://localhost:80/api/accounts/removefollower", data)
+    data = {"user_id": "59071e74f30f8f0b83ce88c6", "want_to_unfollow": userInput}
+    r = requests.post("http://localhost:80/api/accounts/unfollow", data)
     result = r.json()
-    if result['result']['nModified'] == 0:
-        print("0 modified")
-    elif result['result']['nModified'] == 1:
-        print("1 modified")
-    else:
-        print("error?")
-
+    print(result)
 
 
 def getFollowers():
     data = {"username": "jens"}
     # r = requests.post(url + "/getfollowers", data)
-    r = requests.post("http://localhost:80/api/accounts/getfollowers", data)
+    r = requests.post("http://localhost:80/api/accounts/followers", data)
     print(r.json())
 
 
