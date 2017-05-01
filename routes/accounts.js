@@ -5,6 +5,29 @@ var db = mongojs("mongodb://localhost:27017/home", ["users"]);
 
 /*
 ####################################
+    /api/accounts/login
+    POST - login user
+####################################
+*/
+router.post("/login", (req, res, next) => {
+    const user = req.body;
+    db.users.findOne({ username: user.username, password: user.password }, (err, user) =>  {
+        if (err) {
+            res.json({
+                error: err
+            })
+        } else if (user) {
+            res.json(user);
+        } else {
+            res.json({ 
+                error: "username or account wrong" 
+            });
+        }
+    });
+});
+
+/*
+####################################
     /api/accounts
     POST - creates a new account
     GET - gets all accounts (remove when launch)
@@ -15,7 +38,7 @@ router.get("/", (req, res, next) => {
     db.users.find((err, users) => {
         if (err) {
             res.json({
-                "error": err
+                error: err
             })
         } else {
             res.json(users);
@@ -29,7 +52,7 @@ router.post("/", (req, res, next) => {
     if (!user.username) {
         res.status(400);
         res.json({
-            "error": "You need to choose a username"
+            error: "You need to choose a username"
         });
     } else {
         userExists(res, user).then((doesExist) => {
@@ -37,7 +60,9 @@ router.post("/", (req, res, next) => {
                 user.following = []
                 createUser(res, user);
             } else {
-                res.json({ "error": "extremely wierd error@post create user" });
+                res.json({ 
+                    error: "extremely wierd error@post create user" 
+                });
             }
         }).catch((reason) => {
             console.log("Handle rejected promise (" + reason + ") here.");
@@ -57,56 +82,71 @@ router.post("/followers", (req, res, next) => {
     const user_id = req.body.user_id;
     const want_to_follow = req.body.want_to_follow;
     isAlreadyFollowing(res, user_id, want_to_follow).then((isFollowing) => {
-        if (isFollowing) {
-            res.json({
-                "huh": "huh"
-            });
-        } else {
-            db.users.update({ "_id": mongojs.ObjectId(user_id) }, {
-                $push: { following: { "username": want_to_follow } }
+        if (!isFollowing) {
+            db.users.update({ _id: mongojs.ObjectId(user_id) }, {
+                $push: { following: { username: want_to_follow } }
             }, function(err, result) {
                 if (err) {
-                    res.json({ "error": err });
+                    res.json({ 
+                        error: err
+                 });
                 } else {
-                    res.json({ "result": result });
+                    res.json({ 
+                        "result": result
+                     });
                 }
             });
-        }
-    });
-});
 
-//Remove a follower
-router.post("/unfollow", (req, res, next) => {
-    const user_id = req.body.user_id
-    const unfollowUsername = req.body.want_to_unfollow;
-    db.users.update({ _id: mongojs.ObjectId( user_id ) }, {
-        $pull: { following: { "username": unfollowUsername } }
-    }, function(err, result) {
-        console.log("sweg");
-        if (err) {
-            res.json({ "error": err });
         } else {
-            res.json({ "result": result });
+            res.json({
+                error: "huh"
+            });
         }
     });
 });
 
 router.get("/followers", (req, res, next) => {
-    const user = req.body;
-    db.users.findOne({ "username": user.username }, (err, user) =>  {
+    const user_id = req.query.user_id;
+    db.users.findOne({ _id: mongojs.ObjectId(user_id) }, (err, user) =>  {
         if (err) {
             res.json({
-                "error": "error"
+                error: err
             });
         } else if (!user.following) {
             res.json({
-                "error": "user is not following anyone"
+                error: "user is not following anyone"
             });
         } else {
             res.json(user.following);
         }
     });
-})
+});
+
+/*
+####################################
+    /api/accounts/unfollow
+    POST - remove a follower
+####################################
+*/
+//Remove a follower
+router.post("/unfollow", (req, res, next) => {
+    const user_id = req.body.user_id
+    const unfollowUsername = req.body.want_to_unfollow;
+    db.users.update({ _id: mongojs.ObjectId(user_id) }, {
+        $pull: { following: { username: unfollowUsername } }
+    }, function(err, result) {
+        if (err) {
+            res.json({ 
+                error: err 
+        });
+        } else {
+            res.json({ 
+                result: result 
+            });
+        }
+    });
+});
+
 
 
 /*
@@ -122,7 +162,7 @@ router.get("/:id", (req, res, next) => {
     db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) =>  {
         if (err) {
             res.json({
-                "error": err
+                error: err
             })
         } else {
             res.json(user);
@@ -135,7 +175,7 @@ router.post("/:id", (req, res, next) => {
     db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) =>  {
         if (err) {
             res.json({
-                "error": err
+                error: err
             })
         } else {
             //Logic here pls
@@ -149,31 +189,10 @@ router.delete("/:id", (req, res, next) => {
     db.users.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, user) => {
         if (err) {
             res.json({
-                "error": err
+                error: err
             })
         } else {
             res.json(user);
-        }
-    });
-});
-
-/*
-####################################
-    /api/accounts/login
-    POST - login user
-####################################
-*/
-router.post("/login", (req, res, next) => {
-    const user = req.body;
-    db.users.findOne({ "username": user.username, "password": user.password }, (err, user) =>  {
-        if (err) {
-            res.json({
-                "error": err
-            })
-        } else if (user) {
-            res.json(user);
-        } else {
-            res.json({ "error": "username or account wrong" });
         }
     });
 });
@@ -187,7 +206,9 @@ router.post("/login", (req, res, next) => {
 function createUser(res, user) {
     db.users.save(user, (err, user) => {
         if (err) {
-            res.json({ "error": "error inside users.save" });
+            res.json({ 
+                error: "error inside users.save" 
+            });
         }
         res.json(user);
     });
@@ -198,10 +219,14 @@ function userExists(res, user) {
         (resolve, reject) => {
             db.users.findOne({ username: user.username }, (err, user) => {
                 if (err) {
-                    res.json({ "error": "userExists error" });
+                    res.json({ 
+                        error: "userExists error" 
+                    });
                 } else {
                     if (user) {
-                        res.json({ "error": "user already exists" });
+                        res.json({ 
+                            error: "user already exists" 
+                        });
                     } else {
                         resolve(false);
                     }
@@ -222,21 +247,21 @@ function isAlreadyFollowing(res, user_id, want_to_follow) {
     return new Promise(
         (resolve, reject) => {
             db.user.find({
-                 _id: mongojs.ObjectId(user_id), following: { "username": want_to_follow }
+                _id: mongojs.ObjectId(user_id),
+                following: { username: want_to_follow }
             }, (err, user) => {
                 if (err) {
                     resolve(false);
                 } else if (user) {
+                    console.log(user);
                     res.json({
-                        "error": ("already following " + want_to_follow)
+                        error: ("already following " + want_to_follow)
                     });
                 } else {
                     resolve(false);
                 }
             });
-        }
-    )
-
+        });
 }
 
 

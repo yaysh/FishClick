@@ -4,18 +4,17 @@ url = "http://localhost:80/api/accounts"
 
 def main():  
     # print("Testing create account")
-    #createAccount()
     # deleteAccount()
-    # print("Testing login")
-    # login()
-    #addFollower()
-     removeFollower()
-    # getFollowers()
+    # createAccount()                   #fungerar
+    # login()                           #fungerar
+     addFollower()
+    # removeFollower()                  #fungerar
+    # getFollowers()                    #fungerar
 
 
 
 def createAccount():
-    newAccount = {'username':'anna', 'password': 'isfeldt'}
+    newAccount = {'username':'anna2', 'password': 'isfeldt'}
     r = requests.post(url, newAccount)
     print(r.json())
 
@@ -23,7 +22,7 @@ def createAccount():
 
 def login():
     loginCredentials = {'username':'jens', 'password': 'madsen'}
-    r = requests.post(url, loginCredentials)
+    r = requests.post("http://localhost:80/api/accounts/login", loginCredentials)
     print(r.json())
 
 
@@ -55,9 +54,8 @@ def removeFollower():
 
 
 def getFollowers():
-    data = {"username": "jens"}
-    # r = requests.post(url + "/getfollowers", data)
-    r = requests.post("http://localhost:80/api/accounts/followers", data)
+    data = {"user_id": "59071e74f30f8f0b83ce88c6"}
+    r = requests.get("http://localhost:80/api/accounts/followers", data)
     print(r.json())
 
 
