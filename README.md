@@ -1,40 +1,26 @@
 # FishClick
 Backend for my mobile app
 
-Vad som fungerar just nu:
-
 /api/accounts/
-POST request skapar new account
-data = {'username': username, 'password': password}
+POST - skapar nytt account 
+data = {username: "", password: ""}
+GET - hämtar alla accounts (används för att testa under utveckling, tas bort senare)
 
-GET request hämtar alla accounts just nu
-Ingen data behöver skickas
-error resulterar {'error': err}
+/api/accounts/followers/
+POST - lägger till en följare i användares “following”-lista.
+data = {user_id: "", "want_to_follow: ""}
+GET - hämtar alla användare som en användare följer.
+data = {username: ""}
 
-/*
-  DESSA TRE BORDE KANSKE VARA GET, POST, DELETE PÅ /api/accounts/followers
-*/
-/api/accounts/addfollower
-POST request lägger till en följare
-data = req.body.username //KANSKE ÄNDRA TILL PARAMS ISTÄLLET FÖR BODY?
-
-/api/accounts/removefollower
-POST tar bort en följare
-data = req.body.username //KANSKE ÄNDRA TILL PARAMS ISTÄLLET FÖR BODY?
-error resulterar i {'error': err}
-en lyckat transaktion resulterar i {'result': result}
-
-/api/accounts/getfollowers
-GET hämtar alla följare som en användare har
-data = req.body = {'username': username}
-Inga användare hittades resulterar i {"error": "user is not following anyone"}
-Error resulterar i {"error": err}
-/*
-  DESSA TRE BORDE KANSKE VARA GET, POST, DELETE PÅ /api/accounts/followers
-*/
+/api/accounts/unfollow/
+POST - ta bort en följare i användarens "following"-lista.
+data = {user_id, "", want_to_unfollow: ""}
 
 /api/accounts/:id/
-GET hämtar användare vars id är req.params.id
-error resulterar i {'error': err}
+GET - hämtar alla uppgifter om användaren. 
+DELETE - raderar en användare 
+POST - uppdaterar informationen om en användare
 
-DELETE resulterar i att req.params.id raderas om det finns i databasen
+/api/accounts/login
+POST - loggar in en anvädare
+data = {username: "", password: ""}
