@@ -49,19 +49,23 @@ router.get("/", (req, res, next) => {
 //Create user
 router.post("/", (req, res, next) => {
     const user = req.body;
+
     if (!user.username) {
-        res.status(400);
         res.json({
             error: "You need to choose a username"
         });
-    } else {
+    } else if(!user.password){
+        res.json({
+            error: "You need to choose a password"
+        });
+    }else {
         userExists(user.username).then((doesExist) => {
             if (!doesExist) {
                 user.following = [{ username: user.username }]
                 createUser(res, user);
             } else {
                 res.json({
-                    error: "extremely wierd error@post create user"
+                    error: "Username is already taken"
                 });
             }
         }).catch((reason) => {
@@ -121,14 +125,16 @@ router.get("/followers", (req, res, next) => {
     db.users.findOne({ _id: mongojs.ObjectId(user_id) }, (err, user) => {
         if (err) {
             res.json({
-                error: err
+                error: "error"
             });
         } else if (!user.following) {
             res.json({
                 error: "user is not following anyone"
             });
         } else {
-            res.json(user.following);
+            res.json({
+                result: user.following
+            });
         }
     });
 });
@@ -250,7 +256,9 @@ function createUser(res, user) {
                 error: "error inside users.save"
             });
         }
-        res.json(user);
+        res.json({
+            result: user.username + " was created"
+        });
     });
 }
 

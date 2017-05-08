@@ -9,7 +9,7 @@ def main():
     # createAccount()                   #fungerar
     # login()                           #fungerar
     # addFollower()                     #fungerar
-     removeFollower()                  #fungerar
+    # removeFollower()                  #fungerar
     # getFollowers()                    #fungerar
     #deleteAccountUnfollowTest()
 
@@ -54,6 +54,7 @@ def removeFollower():
 def getFollowers():
     data = {"user_id": "59071e74f30f8f0b83ce88c6"}
     r = requests.get("http://localhost:80/api/accounts/followers", data)
+    print(r)
     print(r.json())
 
 
