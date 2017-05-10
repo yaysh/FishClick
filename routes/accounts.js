@@ -26,6 +26,8 @@ router.post("/login", (req, res, next) => {
     });
 });
 
+
+
 /*
 ####################################
     /api/accounts
@@ -46,6 +48,8 @@ router.get("/", (req, res, next) => {
     })
 });
 
+
+
 //Create user
 router.post("/", (req, res, next) => {
     const user = req.body;
@@ -54,11 +58,11 @@ router.post("/", (req, res, next) => {
         res.json({
             error: "You need to choose a username"
         });
-    } else if(!user.password){
+    } else if (!user.password) {
         res.json({
             error: "You need to choose a password"
         });
-    }else {
+    } else {
         userExists(user.username).then((doesExist) => {
             if (!doesExist) {
                 user.following = [{ username: user.username }]
@@ -74,6 +78,8 @@ router.post("/", (req, res, next) => {
     }
 });
 
+
+
 /*
 ####################################
     /api/accounts/followers
@@ -84,7 +90,6 @@ router.post("/", (req, res, next) => {
 router.post("/followers", (req, res, next) => {
     const user_id = req.body.user_id;
     const want_to_follow = req.body.want_to_follow;
-
 
     userExists(want_to_follow).then((doesExist) => {
         if (doesExist) {
@@ -120,6 +125,8 @@ router.post("/followers", (req, res, next) => {
 
 });
 
+
+
 router.get("/followers", (req, res, next) => {
     const user_id = req.query.user_id;
     db.users.findOne({ _id: mongojs.ObjectId(user_id) }, (err, user) => {
@@ -138,6 +145,8 @@ router.get("/followers", (req, res, next) => {
         }
     });
 });
+
+
 
 /*
 ####################################
@@ -158,7 +167,6 @@ router.post("/unfollow", (req, res, next) => {
                         error: "cant unfollow yourself"
                     });
                 } else {
-                    console.log(result);
                     db.users.update({ _id: mongojs.ObjectId(user_id) }, {
                         $pull: { following: { username: unfollowUsername } }
                     }, function(err, result) {
@@ -174,7 +182,7 @@ router.post("/unfollow", (req, res, next) => {
                     });
                 }
             });
-        }else{
+        } else {
             res.json({
                 error: "user doesn't exist"
             })
@@ -188,13 +196,14 @@ router.post("/unfollow", (req, res, next) => {
     ####################################
     /api/accounts/:id
     GET - get user
-    POST - update user
     DELETE - delete user
     ####################################
 */
 //get user details where ID = req.params.id
-router.get("/:id", (req, res, next) => {
-    db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) => {
+router.get("/admin/:id", (req, res, next) => {
+    db.users.findOne({
+        _id: mongojs.ObjectId(req.params.id)
+    }, (err, user) => {
         if (err) {
             res.json({
                 error: err
@@ -205,27 +214,17 @@ router.get("/:id", (req, res, next) => {
     });
 });
 
-//update user details where ID = req.params.id
-router.post("/:id", (req, res, next) => {
-    db.users.findOne({ _id: mongojs.ObjectId(req.params.id) }, (err, user) => {
-        if (err) {
-            res.json({
-                error: err
-            })
-        } else {
-            //Logic here pls
-        }
-    });
-});
 
 //delete a single user based on the user ID found in the mongodb 
 //fix some security around this one lads
-router.delete("/:id", (req, res, next) => {
+router.delete("/admin/:id", (req, res, next) => {
     findUserById(req.params.id).then((username) => {
         if (username) {
             deleteAllOccurencesOf(username).then((wentOk) => {
                 if (wentOk === true) {
-                    db.users.remove({ _id: mongojs.ObjectId(req.params.id) }, (err, user) => {
+                    db.users.remove({
+                        _id: mongojs.ObjectId(req.params.id)
+                    }, (err, user) => {
                         if (err) {
                             res.json({
                                 error: err
@@ -236,12 +235,79 @@ router.delete("/:id", (req, res, next) => {
                     });
                 }
             });
-        } else {
-            console.log("no username")
-        }
+        } else {}
 
     });
 });
+
+
+/*
+####################################
+    /api/accounts/caughtfish
+    POST - adds a fish to "caught fish"
+####################################
+*/
+
+
+
+router.post("/caughtfish", (req, res, next) => {
+    const id = mongojs.ObjectID(req.body.user_id);
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+
+    db.users.findOne({
+        _id: id
+    }, (err, user) => {
+        if (err) {
+            res.json({
+                err: err
+            });
+        } else if (user) {
+            addCatch(id, latitude, longitude).then((result) => {
+                if (result) {
+                    res.json({
+                        success: true
+                    });
+                } else {
+                    res.json({
+                        success: false
+                    });
+                }
+            });
+        } else {
+            res.json({
+                success: false
+            });
+        }
+    })
+});
+
+function flatten(a, b){
+    return a.concat(b);
+}
+
+router.get("/caughtfish", (req, res, next) => {
+    const user_id = mongojs.ObjectID(req.query.user_id);
+    getFollowingList(user_id).then((friends) => {
+        if (friends) {
+            allPromises = friends.map(x=>getFishFromFriend(x));
+            Promise.all(allPromises).then((allFish) => {
+                allFish = allFish
+                    .filter(x => hasCaughtFish(x))
+                allFish
+                    .map(x => {
+                    x.caughtFish = x.caughtFish
+                        .filter(x => fishCaughtToday(x));
+                    })  
+                
+                res.json({
+                    success: allFish
+                })
+            });
+        }
+    });
+});
+
 
 /*
     The following two functions are helper functions for creating the account
@@ -262,6 +328,35 @@ function createUser(res, user) {
     });
 }
 
+function addCatch(id, lat, long) {
+    return new Promise(
+        (resolve, reject) => {
+            const dateObject = new Date();
+            const year = String(dateObject.getFullYear());
+            const month = String(dateObject.getMonth() + 1);
+            const day = String(dateObject.getDate());
+
+            db.users.update({ _id: id }, {
+                $push: {
+                    caughtFish: {
+                        latitude: lat,
+                        longitude: long,
+                        date: year + "/" + month + "/" + day
+                    }
+                }
+            }, (err, result) => {
+                if (err) {
+                    resolve(false);
+                } else if (result) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        }
+    );
+
+}
 
 function userExists(username) {
     return new Promise(
@@ -365,5 +460,65 @@ function isAlreadyFollowing(res, user_id, want_to_follow) {
         });
 }
 
+function getFollowingList(user_id) {
+    return new Promise(
+        (resolve, reject) => {
+            db.users.findOne({
+                _id: user_id
+            }, (err, user) => {
+                if (err) {
+                    resolve(false);
+                } else if (user) {
+                    friends = []
+                    user.following.map(x => friends.push(x.username));
+                    resolve(friends);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+}
+
+function getFishFromFriend(friend) {
+    return new Promise(
+        (resolve, reject) => {
+            db.users.findOne({
+                username: friend
+            },(err, user) => {
+                if(err){
+                    resolve();
+                }
+                else if(user){
+                    if(user.caughtFish){
+                        resolve(
+                            {
+                                username: user.username,
+                                caughtFish: user.caughtFish
+                            }
+                        );
+                        //resolve(user.caughtFish);
+                    }else{
+                        resolve({
+                            username: user.username,
+                            caughtFish: []
+                        });
+                    }
+                    
+                }else{
+                    resolve();
+                }
+            })
+        });
+}
+
+const hasCaughtFish = (x) => {
+    return x.caughtFish.length > 0;
+}
+
+const fishCaughtToday = (x) => {
+    const date = new Date();
+    todaysDate = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate(); 
+    return x.date === todaysDate;
+}
 
 module.exports = router;
