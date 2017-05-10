@@ -37,7 +37,7 @@ router.post("/login", (req, res, next) => {
 */
 router.post("/photo", (req, res, next) => {
     var b64string = req.body.photo;
-     var image = Buffer.from(b64string, 'base64'); //decoded image
+    var image = Buffer.from(b64string, 'base64'); //decoded image
     //var image = b64string;
     const lat = req.body.latitude;
     const lon = req.body.longitude;

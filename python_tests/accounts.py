@@ -80,7 +80,7 @@ def caughtFishPost():
     print(r.json())
 
 def caughtFishGet():
-    data = {"user_id": "5913162de3748d327089b288"}
+    data = {"user_id": "5913603154a98446d770d94a"}
     r = requests.get(url + "/caughtfish", data)
     print(r.json())
 
