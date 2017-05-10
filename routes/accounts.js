@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var mongojs = require("mongojs");
+var fs = require("fs");
 var db = mongojs("mongodb://localhost:27017/home", ["users"]);
 
 /*
@@ -27,6 +28,25 @@ router.post("/login", (req, res, next) => {
 });
 
 
+/*
+####################################
+    /api/accounts/photo
+    POST - adds photo
+
+####################################
+*/
+router.post("/photo", (req, res, next) => {
+    var b64string = req.body.photo;
+    var buf = Buffer.from(b64string, 'base64'); // Ta-da
+    const title = req.body.title
+    fs.writeFile("/Users/madswed/Desktop/"+title+".jpg", buf, function(err) {
+        if (err) {
+            console.log(err);
+        }
+
+        console.log("The file was saved!");
+    });
+});
 
 /*
 ####################################
@@ -254,7 +274,6 @@ router.post("/caughtfish", (req, res, next) => {
     const id = mongojs.ObjectID(req.body.user_id);
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
-
     db.users.findOne({
         _id: id
     }, (err, user) => {
@@ -282,7 +301,7 @@ router.post("/caughtfish", (req, res, next) => {
     })
 });
 
-function flatten(a, b){
+function flatten(a, b) {
     return a.concat(b);
 }
 
@@ -290,16 +309,15 @@ router.get("/caughtfish", (req, res, next) => {
     const user_id = mongojs.ObjectID(req.query.user_id);
     getFollowingList(user_id).then((friends) => {
         if (friends) {
-            allPromises = friends.map(x=>getFishFromFriend(x));
+            allPromises = friends.map(x => getFishFromFriend(x));
             Promise.all(allPromises).then((allFish) => {
                 allFish = allFish
                     .filter(x => hasCaughtFish(x))
                 allFish
                     .map(x => {
-                    x.caughtFish = x.caughtFish
-                        .filter(x => fishCaughtToday(x));
-                    })  
-                
+                        x.caughtFish = x.caughtFish
+                            .filter(x => fishCaughtToday(x));
+                    })
                 res.json({
                     success: allFish
                 })
@@ -484,27 +502,24 @@ function getFishFromFriend(friend) {
         (resolve, reject) => {
             db.users.findOne({
                 username: friend
-            },(err, user) => {
-                if(err){
+            }, (err, user) => {
+                if (err) {
                     resolve();
-                }
-                else if(user){
-                    if(user.caughtFish){
-                        resolve(
-                            {
-                                username: user.username,
-                                caughtFish: user.caughtFish
-                            }
-                        );
+                } else if (user) {
+                    if (user.caughtFish) {
+                        resolve({
+                            username: user.username,
+                            caughtFish: user.caughtFish
+                        });
                         //resolve(user.caughtFish);
-                    }else{
+                    } else {
                         resolve({
                             username: user.username,
                             caughtFish: []
                         });
                     }
-                    
-                }else{
+
+                } else {
                     resolve();
                 }
             })
@@ -517,7 +532,7 @@ const hasCaughtFish = (x) => {
 
 const fishCaughtToday = (x) => {
     const date = new Date();
-    todaysDate = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate(); 
+    todaysDate = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
     return x.date === todaysDate;
 }
 

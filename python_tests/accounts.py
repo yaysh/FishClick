@@ -12,8 +12,8 @@ def main():
     # removeFollower()                  #fungerar
     # getFollowers()                    #fungerar
     # deleteAccountUnfollowTest()
-    # caughtFishPost()
-     caughtFishGet()
+     caughtFishPost()
+    # caughtFishGet()
 
 
 def createAccount():
@@ -73,8 +73,8 @@ def caughtFishPost():
     data = {
         #"user_id": "5913162de3748d327089b288", #jens
         "user_id": "5907a410ac5b30268c1447bb", #anna3
-        "latitude": "58.0",
-        "longitude": "18.9"    
+        "latitude": "58.429145",
+        "longitude": "15.5824995"    
     }
     r = requests.post(url + "/caughtfish", data)
     print(r.json())
