@@ -6,13 +6,13 @@ url = "http://localhost:80/api/accounts"
 def main():
     # print("Testing create account")
     # deleteAccount()
-    # createAccount()                   #fungerar
+     createAccount()                   #fungerar
     # login()                           #fungerar
     # addFollower()                     #fungerar
     # removeFollower()                  #fungerar
     # getFollowers()                    #fungerar
     # deleteAccountUnfollowTest()
-     caughtFishPost()
+    # caughtFishPost()
     # caughtFishGet()
 
 

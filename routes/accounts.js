@@ -37,15 +37,45 @@ router.post("/login", (req, res, next) => {
 */
 router.post("/photo", (req, res, next) => {
     var b64string = req.body.photo;
-    var buf = Buffer.from(b64string, 'base64'); // Ta-da
-    const title = req.body.title
-    fs.writeFile("/Users/madswed/Desktop/"+title+".jpg", buf, function(err) {
-        if (err) {
-            console.log(err);
+     var image = Buffer.from(b64string, 'base64'); //decoded image
+    //var image = b64string;
+    const lat = req.body.latitude;
+    const lon = req.body.longitude;
+    const user_id = mongojs.ObjectId(req.body.user_id);
+    console.log(user_id);
+    db.users.findOne({
+        _id: user_id
+    }, (err, user) => {
+        if(err){
+            res.json({
+                err: err
+            });
+        }else if(user){
+            console.log("found user");
+            addCatchWithImage(user_id, lat, lon, image).then((result) => {
+                if(result){
+                    res.json({
+                        success: "image added"
+                    });
+                }else{
+                    res.json({
+                        error: "not saved"
+                    })
+                }
+            });
+        }else{
+            console.log("user not found");
         }
+    })
+    // fs.writeFile("/Users/madswed/Desktop/"+title+".jpg", image, function(err) {
+    //     if (err) {
+    //         console.log(err);
+    //     }
 
-        console.log("The file was saved!");
-    });
+    //     console.log("The file was saved!");
+    // });
+
+    db.users.find
 });
 
 /*
@@ -359,7 +389,8 @@ function addCatch(id, lat, long) {
                     caughtFish: {
                         latitude: lat,
                         longitude: long,
-                        date: year + "/" + month + "/" + day
+                        date: year + "/" + month + "/" + day,
+                        image: ""
                     }
                 }
             }, (err, result) => {
@@ -373,7 +404,36 @@ function addCatch(id, lat, long) {
             });
         }
     );
+}
 
+function addCatchWithImage(user_id, lat, long, image) {
+    return new Promise(
+        (resolve, reject) => {
+            const dateObject = new Date();
+            const year = String(dateObject.getFullYear());
+            const month = String(dateObject.getMonth() + 1);
+            const day = String(dateObject.getDate());
+
+            db.users.update({ _id: user_id }, {
+                $push: {
+                    caughtFish: {
+                        latitude: lat,
+                        longitude: long,
+                        date: year + "/" + month + "/" + day,
+                        image: image
+                    }
+                }
+            }, (err, result) => {
+                if (err) {
+                    resolve(false);
+                } else if (result) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        }
+    );
 }
 
 function userExists(username) {
