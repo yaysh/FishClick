@@ -116,6 +116,7 @@ router.post("/", (req, res, next) => {
         userExists(user.username).then((doesExist) => {
             if (!doesExist) {
                 user.following = [{ username: user.username }]
+                user.caughtFish = []
                 createUser(res, user);
             } else {
                 res.json({
@@ -219,7 +220,7 @@ router.post("/unfollow", (req, res, next) => {
                 } else {
                     db.users.update({ _id: mongojs.ObjectId(user_id) }, {
                         $pull: { following: { username: unfollowUsername } }
-                    }, function(err, result) {
+                    }, (err, result) => {
                         if (err) {
                             res.json({
                                 error: err
@@ -299,7 +300,7 @@ router.delete("/admin/:id", (req, res, next) => {
 */
 
 
-
+//adds a caught fish to the users caughtfish []
 router.post("/caughtfish", (req, res, next) => {
     const id = mongojs.ObjectID(req.body.user_id);
     const latitude = req.body.latitude;
@@ -335,6 +336,7 @@ function flatten(a, b) {
     return a.concat(b);
 }
 
+//gets all fish that user and friends have caught
 router.get("/caughtfish", (req, res, next) => {
     const user_id = mongojs.ObjectID(req.query.user_id);
     getFollowingList(user_id).then((friends) => {
@@ -356,6 +358,69 @@ router.get("/caughtfish", (req, res, next) => {
     });
 });
 
+
+/*
+####################################
+    /api/accounts/getusersfish
+    GET - gets a list of all the fish a user has caught
+####################################
+*/
+
+router.get("/getuserscaughtfish", (req, res, next) => {
+    const user_id = mongojs.ObjectID(req.query.user_id);
+    db.users.findOne({
+        _id: user_id
+    }, (err, user) => {
+        if(err){
+            res.json({
+                error: err
+            });
+        }else if(user){
+            res.json({
+                success: user.caughtFish
+            })
+        }else{
+            res.json({
+                error: "couldn't find user"
+            });
+        }
+    })
+
+});
+
+
+/*
+####################################
+    /api/accounts/removeuserscaughtfish
+    GET - gets a list of all the fish a user has caught
+####################################
+*/
+
+router.post("/removeuserscaughtfish", (req, res, next) => {
+    const user_id = mongojs.ObjectID(req.body.user_id);
+    const imageDate = req.body.date;
+    console.log(user_id)
+    console.log(imageDate)
+
+    db.users.update({ _id: user_id }, {
+        $pull: { caughtFish: { date: imageDate } }
+    }, (err, result) => {
+        if(err){
+            res.json({
+                error: err
+            });
+        }else if(result){
+            console.log(result);
+            res.json({
+                success: "catch removed"
+            });
+        }else{
+            res.json({
+                error: "error"
+            });
+        }
+    });
+});
 
 /*
     The following two functions are helper functions for creating the account
@@ -383,13 +448,16 @@ function addCatch(id, lat, long) {
             const year = String(dateObject.getFullYear());
             const month = String(dateObject.getMonth() + 1);
             const day = String(dateObject.getDate());
+            const minute = String(dateObject.getMinutes());
+            const second = String(dateObject.getSeconds());
+            const millesecond = String(dateObject.getMilliseconds());
 
             db.users.update({ _id: id }, {
                 $push: {
                     caughtFish: {
                         latitude: lat,
                         longitude: long,
-                        date: year + "/" + month + "/" + day,
+                        date: year + "/" + month + "/" + day + "/" + minute + "/" + second + "/" + millesecond,
                         image: ""
                     }
                 }
@@ -413,13 +481,16 @@ function addCatchWithImage(user_id, lat, long, image) {
             const year = String(dateObject.getFullYear());
             const month = String(dateObject.getMonth() + 1);
             const day = String(dateObject.getDate());
+            const minute = String(dateObject.getMinutes());
+            const second = String(dateObject.getSeconds());
+            const millesecond = String(dateObject.getMilliseconds());
 
             db.users.update({ _id: user_id }, {
                 $push: {
                     caughtFish: {
                         latitude: lat,
                         longitude: long,
-                        date: year + "/" + month + "/" + day,
+                        date: year + "/" + month + "/" + day + "/" + minute + "/" + second + "/" + millesecond,
                         image: image
                     }
                 }
@@ -592,8 +663,12 @@ const hasCaughtFish = (x) => {
 
 const fishCaughtToday = (x) => {
     const date = new Date();
+    var userDate = x.date.split("/", 3);
+    var userDate = userDate[0] + "/" + userDate[1] + "/" + userDate[2];
+    console.log(userDate);
+
     todaysDate = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
-    return x.date === todaysDate;
+    return userDate === todaysDate;
 }
 
 module.exports = router;

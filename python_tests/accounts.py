@@ -1,12 +1,12 @@
 import requests
 
 url = "http://localhost:80/api/accounts"
-
+user_id = "5919a5e0497ffe15bbc9b1a3"
 
 def main():
     # print("Testing create account")
     # deleteAccount()
-     createAccount()                   #fungerar
+    # createAccount()                   #fungerar
     # login()                           #fungerar
     # addFollower()                     #fungerar
     # removeFollower()                  #fungerar
@@ -14,6 +14,8 @@ def main():
     # deleteAccountUnfollowTest()
     # caughtFishPost()
     # caughtFishGet()
+    # getAllFishFromUser()
+    removeFishFromUser()
 
 
 def createAccount():
@@ -54,7 +56,7 @@ def removeFollower():
 
 
 def getFollowers():
-    data = {"user_id": "5913162de3748d327089b288"}
+    data = {"user_id", user_id}
     r = requests.get("http://localhost:80/api/accounts/followers", data)
     print(r)
     print(r.json())
@@ -71,8 +73,7 @@ def deleteAccountUnfollowTest():
 
 def caughtFishPost():
     data = {
-        #"user_id": "5913162de3748d327089b288", #jens
-        "user_id": "5907a410ac5b30268c1447bb", #anna3
+        "user_id" : user_id,
         "latitude": "58.429145",
         "longitude": "15.5824995"    
     }
@@ -80,10 +81,22 @@ def caughtFishPost():
     print(r.json())
 
 def caughtFishGet():
-    data = {"user_id": "5913603154a98446d770d94a"}
+    data = {"user_id": user_id}
     r = requests.get(url + "/caughtfish", data)
     print(r.json())
 
+def getAllFishFromUser():
+    data = {"user_id", user_id}
+    r = requests.get(url + "/getuserscaughtfish", data)
+    print(r.json())
+
+def removeFishFromUser():
+    data = {
+        "user_id": user_id,
+        "date": "2017/5/15/20/39/328"    
+    }
+    r = requests.post(url + "/removeuserscaughtfish", data)
+    print(r.json())    
 
 main()
 
