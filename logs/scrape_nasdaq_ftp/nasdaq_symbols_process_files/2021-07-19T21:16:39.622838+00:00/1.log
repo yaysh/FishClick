@@ -1,0 +1,47 @@
+[2021-07-19 23:18:35,525] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_process_files 2021-07-19T21:16:39.622838+00:00 [queued]>
+[2021-07-19 23:18:35,530] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_process_files 2021-07-19T21:16:39.622838+00:00 [queued]>
+[2021-07-19 23:18:35,530] {taskinstance.py:1087} INFO - 
+--------------------------------------------------------------------------------
+[2021-07-19 23:18:35,530] {taskinstance.py:1088} INFO - Starting attempt 1 of 1
+[2021-07-19 23:18:35,530] {taskinstance.py:1089} INFO - 
+--------------------------------------------------------------------------------
+[2021-07-19 23:18:35,553] {taskinstance.py:1107} INFO - Executing <Task(PythonOperator): nasdaq_symbols_process_files> on 2021-07-19T21:16:39.622838+00:00
+[2021-07-19 23:18:35,555] {standard_task_runner.py:52} INFO - Started process 27586 to run task
+[2021-07-19 23:18:35,558] {standard_task_runner.py:76} INFO - Running: ['airflow', 'tasks', 'run', 'scrape_nasdaq_ftp', 'nasdaq_symbols_process_files', '2021-07-19T21:16:39.622838+00:00', '--job-id', '46', '--pool', 'default_pool', '--raw', '--subdir', 'DAGS_FOLDER/nasdaq_dag.py', '--cfg-path', '/tmp/tmptzkatrya', '--error-file', '/tmp/tmp20fjisv3']
+[2021-07-19 23:18:35,558] {standard_task_runner.py:77} INFO - Job 46: Subtask nasdaq_symbols_process_files
+[2021-07-19 23:18:35,592] {logging_mixin.py:104} INFO - Running <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_process_files 2021-07-19T21:16:39.622838+00:00 [running]> on host DESKTOP-4B4VMOV.localdomain
+[2021-07-19 23:18:35,658] {taskinstance.py:1300} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=airflow
+AIRFLOW_CTX_DAG_ID=scrape_nasdaq_ftp
+AIRFLOW_CTX_TASK_ID=nasdaq_symbols_process_files
+AIRFLOW_CTX_EXECUTION_DATE=2021-07-19T21:16:39.622838+00:00
+AIRFLOW_CTX_DAG_RUN_ID=manual__2021-07-19T21:16:39.622838+00:00
+[2021-07-19 23:18:35,667] {taskinstance.py:1501} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 1157, in _run_raw_task
+    self._prepare_and_execute_task_with_callbacks(context, task)
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 1331, in _prepare_and_execute_task_with_callbacks
+    result = self._execute_task(context, task_copy)
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 1361, in _execute_task
+    result = task_copy.execute(context=context)
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/operators/python.py", line 150, in execute
+    return_value = self.execute_callable()
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/operators/python.py", line 161, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/home/yaysh/airflow/dags/nasdaq_dag.py", line 38, in handle_nasdaq_symbols_file
+    nasdaq_symbol_file_processor = NasdaqSymbolFileProcessor(basepath, db_host, db_db, db_username, db_password, db_port)
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_file_processor.py", line 13, in __init__
+    self.db_handler = NasdaqSymbolFileProcessorDatabaseHandler(DB_HOST, DB_DB, DB_USERNAME, DB_PASSWORD, DB_PORT)
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_file_processor_db.py", line 12, in __init__
+    self.createDatabaseIfDoesntExist()
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_file_processor_db.py", line 42, in createDatabaseIfDoesntExist
+    conn = self.getConnection()
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_file_processor_db.py", line 16, in getConnection
+    return psycopg2.connect(
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: FATAL:  password authentication failed for user "yaysh"
+FATAL:  password authentication failed for user "yaysh"
+
+[2021-07-19 23:18:35,669] {taskinstance.py:1544} INFO - Marking task as FAILED. dag_id=scrape_nasdaq_ftp, task_id=nasdaq_symbols_process_files, execution_date=20210719T211639, start_date=20210719T211835, end_date=20210719T211835
+[2021-07-19 23:18:35,689] {local_task_job.py:149} INFO - Task exited with return code 1

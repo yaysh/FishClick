@@ -1,0 +1,43 @@
+[2021-08-28 10:53:40,257] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_download_files 2021-08-27T00:00:00+00:00 [queued]>
+[2021-08-28 10:53:40,259] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_download_files 2021-08-27T00:00:00+00:00 [queued]>
+[2021-08-28 10:53:40,259] {taskinstance.py:1087} INFO - 
+--------------------------------------------------------------------------------
+[2021-08-28 10:53:40,259] {taskinstance.py:1088} INFO - Starting attempt 1 of 1
+[2021-08-28 10:53:40,259] {taskinstance.py:1089} INFO - 
+--------------------------------------------------------------------------------
+[2021-08-28 10:53:40,276] {taskinstance.py:1107} INFO - Executing <Task(PythonOperator): nasdaq_symbols_download_files> on 2021-08-27T00:00:00+00:00
+[2021-08-28 10:53:40,277] {standard_task_runner.py:52} INFO - Started process 1336 to run task
+[2021-08-28 10:53:40,279] {standard_task_runner.py:76} INFO - Running: ['airflow', 'tasks', 'run', 'scrape_nasdaq_ftp', 'nasdaq_symbols_download_files', '2021-08-27T00:00:00+00:00', '--job-id', '70', '--pool', 'default_pool', '--raw', '--subdir', 'DAGS_FOLDER/nasdaq_dag.py', '--cfg-path', '/tmp/tmphwg3_yzn', '--error-file', '/tmp/tmptyz9tmb5']
+[2021-08-28 10:53:40,280] {standard_task_runner.py:77} INFO - Job 70: Subtask nasdaq_symbols_download_files
+[2021-08-28 10:53:40,305] {logging_mixin.py:104} INFO - Running <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_download_files 2021-08-27T00:00:00+00:00 [running]> on host DESKTOP-4B4VMOV.localdomain
+[2021-08-28 10:53:40,350] {taskinstance.py:1300} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=airflow
+AIRFLOW_CTX_DAG_ID=scrape_nasdaq_ftp
+AIRFLOW_CTX_TASK_ID=nasdaq_symbols_download_files
+AIRFLOW_CTX_EXECUTION_DATE=2021-08-27T00:00:00+00:00
+AIRFLOW_CTX_DAG_RUN_ID=scheduled__2021-08-27T00:00:00+00:00
+[2021-08-28 10:53:40,351] {taskinstance.py:1501} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 1157, in _run_raw_task
+    self._prepare_and_execute_task_with_callbacks(context, task)
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 1331, in _prepare_and_execute_task_with_callbacks
+    result = self._execute_task(context, task_copy)
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 1361, in _execute_task
+    result = task_copy.execute(context=context)
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/operators/python.py", line 150, in execute
+    return_value = self.execute_callable()
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/operators/python.py", line 161, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/home/yaysh/airflow/dags/nasdaq_dag.py", line 31, in download_nasdaq_symbols
+    nasdaq_symbol_downloader.download_history()
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_downloader.py", line 15, in download_history
+    if not Path(self.BASEPATH).is_dir():
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/pathlib.py", line 1042, in __new__
+    self = cls._from_parts(args, init=False)
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/pathlib.py", line 683, in _from_parts
+    drv, root, parts = self._parse_args(args)
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/pathlib.py", line 667, in _parse_args
+    a = os.fspath(a)
+TypeError: expected str, bytes or os.PathLike object, not NoneType
+[2021-08-28 10:53:40,352] {taskinstance.py:1544} INFO - Marking task as FAILED. dag_id=scrape_nasdaq_ftp, task_id=nasdaq_symbols_download_files, execution_date=20210827T000000, start_date=20210828T085340, end_date=20210828T085340
+[2021-08-28 10:53:40,411] {local_task_job.py:149} INFO - Task exited with return code 1

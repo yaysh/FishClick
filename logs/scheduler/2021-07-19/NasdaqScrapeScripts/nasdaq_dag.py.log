@@ -1,0 +1,112 @@
+[2021-07-19 18:47:04,392] {scheduler_job.py:181} INFO - Started process (PID=9987) to work on /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:04,392] {scheduler_job.py:632} INFO - Processing file /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py for tasks to queue
+[2021-07-19 18:47:04,393] {logging_mixin.py:104} INFO - [2021-07-19 18:47:04,393] {dagbag.py:496} INFO - Filling up the DagBag from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:04,398] {logging_mixin.py:104} INFO - [2021-07-19 18:47:04,398] {dagbag.py:329} ERROR - Failed to import: /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/dagbag.py", line 326, in _load_modules_from_file
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 848, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py", line 8, in <module>
+    from NasdaqScrapeScripts.nasdaq_symbol_downloader import NasdaqSymbolDownloader
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_downloader.py", line 3, in <module>
+    BASEPATH
+NameError: name 'BASEPATH' is not defined
+[2021-07-19 18:47:04,399] {scheduler_job.py:644} WARNING - No viable dags retrieved from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:04,410] {scheduler_job.py:189} INFO - Processing /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py took 0.020 seconds
+[2021-07-19 18:47:07,051] {scheduler_job.py:181} INFO - Started process (PID=10001) to work on /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:07,052] {scheduler_job.py:632} INFO - Processing file /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py for tasks to queue
+[2021-07-19 18:47:07,052] {logging_mixin.py:104} INFO - [2021-07-19 18:47:07,052] {dagbag.py:496} INFO - Filling up the DagBag from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:07,056] {logging_mixin.py:104} INFO - [2021-07-19 18:47:07,056] {dagbag.py:329} ERROR - Failed to import: /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/dagbag.py", line 326, in _load_modules_from_file
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 848, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py", line 8, in <module>
+    from NasdaqScrapeScripts.nasdaq_symbol_downloader import NasdaqSymbolDownloader
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_downloader.py", line 3, in <module>
+    BASEPATH
+NameError: name 'BASEPATH' is not defined
+[2021-07-19 18:47:07,056] {scheduler_job.py:644} WARNING - No viable dags retrieved from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:07,068] {scheduler_job.py:189} INFO - Processing /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py took 0.017 seconds
+[2021-07-19 18:47:09,297] {scheduler_job.py:181} INFO - Started process (PID=10003) to work on /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:09,297] {scheduler_job.py:632} INFO - Processing file /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py for tasks to queue
+[2021-07-19 18:47:09,297] {logging_mixin.py:104} INFO - [2021-07-19 18:47:09,297] {dagbag.py:496} INFO - Filling up the DagBag from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:09,302] {logging_mixin.py:104} INFO - [2021-07-19 18:47:09,301] {dagbag.py:329} ERROR - Failed to import: /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/dagbag.py", line 326, in _load_modules_from_file
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 848, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py", line 8, in <module>
+    from NasdaqScrapeScripts.nasdaq_symbol_downloader import NasdaqSymbolDownloader
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_downloader.py", line 3, in <module>
+    BASEPATH
+NameError: name 'BASEPATH' is not defined
+[2021-07-19 18:47:09,302] {scheduler_job.py:644} WARNING - No viable dags retrieved from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:09,313] {scheduler_job.py:189} INFO - Processing /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py took 0.017 seconds
+[2021-07-19 18:47:11,553] {scheduler_job.py:181} INFO - Started process (PID=10005) to work on /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:11,553] {scheduler_job.py:632} INFO - Processing file /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py for tasks to queue
+[2021-07-19 18:47:11,554] {logging_mixin.py:104} INFO - [2021-07-19 18:47:11,554] {dagbag.py:496} INFO - Filling up the DagBag from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:11,558] {logging_mixin.py:104} INFO - [2021-07-19 18:47:11,558] {dagbag.py:329} ERROR - Failed to import: /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/dagbag.py", line 326, in _load_modules_from_file
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 848, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py", line 8, in <module>
+    from NasdaqScrapeScripts.nasdaq_symbol_downloader import NasdaqSymbolDownloader
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_downloader.py", line 3, in <module>
+    BASEPATH
+NameError: name 'BASEPATH' is not defined
+[2021-07-19 18:47:11,559] {scheduler_job.py:644} WARNING - No viable dags retrieved from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:11,570] {scheduler_job.py:189} INFO - Processing /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py took 0.018 seconds
+[2021-07-19 18:47:13,802] {scheduler_job.py:181} INFO - Started process (PID=10007) to work on /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:13,802] {scheduler_job.py:632} INFO - Processing file /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py for tasks to queue
+[2021-07-19 18:47:13,803] {logging_mixin.py:104} INFO - [2021-07-19 18:47:13,803] {dagbag.py:496} INFO - Filling up the DagBag from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:13,807] {logging_mixin.py:104} INFO - [2021-07-19 18:47:13,807] {dagbag.py:329} ERROR - Failed to import: /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/dagbag.py", line 326, in _load_modules_from_file
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 848, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py", line 8, in <module>
+    from NasdaqScrapeScripts.nasdaq_symbol_downloader import NasdaqSymbolDownloader
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_downloader.py", line 3, in <module>
+    BASEPATH
+NameError: name 'BASEPATH' is not defined
+[2021-07-19 18:47:13,807] {scheduler_job.py:644} WARNING - No viable dags retrieved from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:13,819] {scheduler_job.py:189} INFO - Processing /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py took 0.018 seconds
+[2021-07-19 18:47:15,571] {scheduler_job.py:181} INFO - Started process (PID=10009) to work on /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:15,571] {scheduler_job.py:632} INFO - Processing file /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py for tasks to queue
+[2021-07-19 18:47:15,572] {logging_mixin.py:104} INFO - [2021-07-19 18:47:15,571] {dagbag.py:496} INFO - Filling up the DagBag from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:15,576] {logging_mixin.py:104} INFO - [2021-07-19 18:47:15,576] {dagbag.py:329} ERROR - Failed to import: /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/dagbag.py", line 326, in _load_modules_from_file
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 848, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py", line 8, in <module>
+    from NasdaqScrapeScripts.nasdaq_symbol_downloader import NasdaqSymbolDownloader
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_downloader.py", line 3, in <module>
+    BASEPATH
+NameError: name 'BASEPATH' is not defined
+[2021-07-19 18:47:15,576] {scheduler_job.py:644} WARNING - No viable dags retrieved from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:15,586] {scheduler_job.py:189} INFO - Processing /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py took 0.016 seconds
+[2021-07-19 18:47:17,820] {scheduler_job.py:181} INFO - Started process (PID=10011) to work on /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:17,821] {scheduler_job.py:632} INFO - Processing file /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py for tasks to queue
+[2021-07-19 18:47:17,821] {logging_mixin.py:104} INFO - [2021-07-19 18:47:17,821] {dagbag.py:496} INFO - Filling up the DagBag from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:17,826] {logging_mixin.py:104} INFO - [2021-07-19 18:47:17,825] {dagbag.py:329} ERROR - Failed to import: /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+Traceback (most recent call last):
+  File "/home/yaysh/anaconda3/envs/airflow/lib/python3.8/site-packages/airflow/models/dagbag.py", line 326, in _load_modules_from_file
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 848, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py", line 8, in <module>
+    from NasdaqScrapeScripts.nasdaq_symbol_downloader import NasdaqSymbolDownloader
+  File "/home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_symbol_downloader.py", line 3, in <module>
+    BASEPATH
+NameError: name 'BASEPATH' is not defined
+[2021-07-19 18:47:17,826] {scheduler_job.py:644} WARNING - No viable dags retrieved from /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py
+[2021-07-19 18:47:17,838] {scheduler_job.py:189} INFO - Processing /home/yaysh/airflow/dags/NasdaqScrapeScripts/nasdaq_dag.py took 0.018 seconds

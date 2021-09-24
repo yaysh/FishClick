@@ -1,0 +1,22 @@
+[2021-08-28 11:46:00,291] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_import_files 2021-08-28T09:45:52.141971+00:00 [queued]>
+[2021-08-28 11:46:00,294] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_import_files 2021-08-28T09:45:52.141971+00:00 [queued]>
+[2021-08-28 11:46:00,294] {taskinstance.py:1087} INFO - 
+--------------------------------------------------------------------------------
+[2021-08-28 11:46:00,294] {taskinstance.py:1088} INFO - Starting attempt 1 of 1
+[2021-08-28 11:46:00,294] {taskinstance.py:1089} INFO - 
+--------------------------------------------------------------------------------
+[2021-08-28 11:46:00,306] {taskinstance.py:1107} INFO - Executing <Task(PythonOperator): nasdaq_symbols_import_files> on 2021-08-28T09:45:52.141971+00:00
+[2021-08-28 11:46:00,308] {standard_task_runner.py:52} INFO - Started process 15815 to run task
+[2021-08-28 11:46:00,310] {standard_task_runner.py:76} INFO - Running: ['airflow', 'tasks', 'run', 'scrape_nasdaq_ftp', 'nasdaq_symbols_import_files', '2021-08-28T09:45:52.141971+00:00', '--job-id', '85', '--pool', 'default_pool', '--raw', '--subdir', 'DAGS_FOLDER/nasdaq_dag.py', '--cfg-path', '/tmp/tmpz3gug1ey', '--error-file', '/tmp/tmp628r81ny']
+[2021-08-28 11:46:00,310] {standard_task_runner.py:77} INFO - Job 85: Subtask nasdaq_symbols_import_files
+[2021-08-28 11:46:00,329] {logging_mixin.py:104} INFO - Running <TaskInstance: scrape_nasdaq_ftp.nasdaq_symbols_import_files 2021-08-28T09:45:52.141971+00:00 [running]> on host DESKTOP-4B4VMOV.localdomain
+[2021-08-28 11:46:00,360] {taskinstance.py:1300} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=airflow
+AIRFLOW_CTX_DAG_ID=scrape_nasdaq_ftp
+AIRFLOW_CTX_TASK_ID=nasdaq_symbols_import_files
+AIRFLOW_CTX_EXECUTION_DATE=2021-08-28T09:45:52.141971+00:00
+AIRFLOW_CTX_DAG_RUN_ID=manual__2021-08-28T09:45:52.141971+00:00
+[2021-08-28 11:46:01,280] {python.py:151} INFO - Done. Returned value was: None
+[2021-08-28 11:46:01,282] {taskinstance.py:1204} INFO - Marking task as SUCCESS. dag_id=scrape_nasdaq_ftp, task_id=nasdaq_symbols_import_files, execution_date=20210828T094552, start_date=20210828T094600, end_date=20210828T094601
+[2021-08-28 11:46:01,297] {taskinstance.py:1265} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2021-08-28 11:46:01,324] {local_task_job.py:149} INFO - Task exited with return code 0
